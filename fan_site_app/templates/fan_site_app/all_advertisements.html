@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Рынок артефактов{% endblock %}
+{% block content %}
+<div class="market-intro">
+    <p>Добро пожаловать на рынок артефактов в Лавке Мудреца!</p>
+    {% if user.is_authenticated %}
+        <p>Вы можете <a href="{% url 'add_advertisement' %}" class="add-link">добавить объявление</a>.</p>
+    {% else %}
+        <p>Вы можете <a href="{% url 'register' %}" class="register-link">зарегистрироваться</a> или <a href="{% url 'login' %}" class="login-link">войти</a>, чтобы добавлять свои объявления.</p>
+    {% endif %}
+</div>
+<div class="advertisements-container">
+    {% for advertisement in advertisements %}
+    <div class="advertisement">
+        <h2>{{ advertisement.title }}</h2>
+        <p>{{ advertisement.content }}</p>
+        <p class="category">Категория: <strong>{{ advertisement.category }}</strong></p>
+        <p class="likes">Лайки: <strong>{{ advertisement.like_count }}</strong></p>
+        <p><a href="{% url 'advertisement_detail' advertisement_id=advertisement.id %}" class="details-link">Подробнее</a></p>
+    </div>
+    {% endfor %}
+</div>
+<style>
+    .market-intro {
+        background-color: #faf8ef;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    .advertisements-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+    .advertisement {
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+    .category, .likes {
+        color: #555;
+        font-style: italic;
+    }
+    .add-link, .register-link, .login-link, .details-link {
+        padding: 8px 12px;
+        background-color: #8A2BE2;
+        color: white;
+        border-radius: 4px;
+        text-decoration: none;
+    }
+    .add-link:hover, .register-link:hover, .login-link:hover, .details-link:hover {
+        background-color: white;
+        color: #8A2BE2;
+    }
+</style>
+{% endblock %}

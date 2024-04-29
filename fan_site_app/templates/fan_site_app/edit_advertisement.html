@@ -1,0 +1,11 @@
+<!-- edit_advertisement.html -->
+{% extends 'base.html' %}
+{% block title %}Редактировать объявление{% endblock %}
+{% block content %}
+    <h2>Редактировать объявление</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Сохранить</button>
+    </form>
+{% endblock %}

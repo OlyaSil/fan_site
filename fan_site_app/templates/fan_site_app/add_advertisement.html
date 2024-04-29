@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Добавить объявление - Лавка Мудреца
+{% endblock %}
+
+{% block content %}
+    <h2>Добавить объявление</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Отправить объявление</button>
+    </form>
+{% endblock %}

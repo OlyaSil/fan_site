@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}Эхо залов{% endblock %}
+{% block content %}
+<div class="responses-container">
+    <h2>Эхо залов: Отклики на ваши артефакты</h2>
+    {% if advertisements %}
+        {% for advertisement in advertisements %}
+            <div class="advertisement-responses">
+                <h3>{{ advertisement.title }}</h3>
+                {% for response in advertisement.responses.all %}
+                    <div class="response">
+                        <p class="response-content">"{{ response.content }}" - <em>{{ response.respondent.username }}</em></p>
+                        <div class="response-actions">
+                            <form action="{% url 'accept_response' response.id %}" method="post">
+                                {% csrf_token %}
+                                <button class="accept-button" type="submit">Принять слова</button>
+                            </form>
+                            <form action="{% url 'delete_response' response.id %}" method="post">
+                                {% csrf_token %}
+                                <button class="delete-button" type="submit">Рассеять слова</button>
+                            </form>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="no-responses">Эхо затихло, откликов нет.</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="no-advertisements">Ваши артефакты еще не привлекли внимания.</p>
+    {% endif %}
+</div>
+<style>
+    .responses-container {
+        background-color: #f3f0e6;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .advertisement-responses {
+        margin-bottom: 30px;
+        padding: 15px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .response {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+    .response-content {
+        font-style: italic;
+    }
+    .accept-button, .delete-button {
+        background-color: #8A2BE2;;
+        color: white;
+        padding: 8px 16px;
+        margin: 5px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    .delete-button {
+        background-color: #333;
+    }
+    .accept-button:hover {
+        background-color: #6a1b9a;
+    }
+    .delete-button:hover {
+        background-color: #555;
+    }
+    .no-responses, .no-advertisements {
+        font-style: italic;
+        color: #6c757d;
+    }
+</style>
+{% endblock %}

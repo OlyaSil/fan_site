@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block title %}Подробности артефакта{% endblock %}
+{% block content %}
+<div class="artifact-details">
+    <h2>{{ advertisement.title }}</h2>
+    <p>{{ advertisement.content }}</p>
+    <p class="category">Категория: <strong>{{ advertisement.category }}</strong></p>
+    {% if advertisement.media %}
+        <img src="{{ advertisement.media.url }}" alt="Медиафайл артефакта" style="max-width: 100%; height: auto;">
+    {% endif %}
+    {% if user.is_authenticated %}
+        <form method="post" action="{% url 'like_advertisement' advertisement.id %}">
+            {% csrf_token %}
+            <button class="like-button" type="submit">Отдать честь</button>
+        </form>
+    {% endif %}
+</div>
+<div class="comment-section">
+    <h3>Заклинания (Комментарии)</h3>
+    <form method="post" action="{% url 'add_response' advertisement.id %}">
+        {% csrf_token %}
+        <textarea name="content" placeholder="Произнесите заклинание..." rows="4" cols="50"></textarea><br>
+        <button class="send-button" type="submit">Произнести</button>
+    </form>
+    {% for response in advertisement.responses.all %}
+        <div class="comment">
+            <p><strong>{{ response.respondent.username }}</strong>: {{ response.content }}</p>
+            <p>Произнесено: {{ response.created_at }}</p>
+            {% if response.respondent == request.user %}
+                <a href="{% url 'edit_response' advertisement.id response.id %}">Переформулировать</a> |
+                <a href="{% url 'delete_response' advertisement.id response.id %}">Рассеять заклинание</a>
+            {% endif %}
+        </div>
+    {% empty %}
+        <p>Заклинаний пока нет.</p>
+    {% endfor %}
+</div>
+{% if advertisement.user == request.user %}
+    <div class="artifact-control">
+        <a href="{% url 'edit_advertisement' advertisement.id %}">Изменить артефакт</a> |
+        <form method="post" action="{% url 'delete_advertisement' advertisement.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button class="delete-button" type="submit" onclick="return confirm('Вы уверены, что хотите уничтожить этот артефакт?');">Уничтожить артефакт</button>
+        </form>
+    </div>
+{% endif %}
+<style>
+    .artifact-details, .comment-section, .artifact-control {
+        background-color: #faf8ef;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+    .like-button, .send-button, .delete-button {
+        background-color: #8A2BE2;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    .like-button:hover, .send-button:hover, .delete-button:hover {
+        background-color: white;
+        color: #8A2BE2;
+    }
+    .comment {
+        border-top: 1px solid #eee;
+        padding-top: 10px;
+    }
+    .category {
+        color: #555;
+        font-style: italic;
+    }
+</style>
+{% endblock %}

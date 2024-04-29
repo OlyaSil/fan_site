@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <style>
+        body {
+            font-family: 'Cardo', serif;
+            background-color: #f4f4f9;
+            color: #3c3b6e;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            display: flex;
+            background-color: #fff;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            width: 100%;
+            padding: 20px 0;
+        }
+        .header h1 {
+            font-family: 'Cardo', serif;
+            color: #4A235A;
+            margin: 0;
+        }
+        .sidebar, .content {
+            padding: 20px;
+        }
+        .sidebar {
+            width: 30%;
+            border-right: 2px solid #eee;
+        }
+        .content {
+            width: 70%;
+        }
+        h1, h2, h3 {
+            color: #5D6D7E;
+        }
+        a {
+            color: #3498DB;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .sidebar h3 {
+            font-family: 'Cardo', serif;
+            color: #633974;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar li {
+            margin-bottom: 10px;
+        }
+        .logout-btn, .subscribe-btn {
+            background-color: #8A2BE2;
+            color: white;
+            padding: 10px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition-duration: 0.4s;
+            font-family: 'Palatino', 'Palatino Linotype', serif;
+            display: inline-block;
+        }
+        .logout-btn:hover, .subscribe-btn:hover {
+            background-color: white;
+            color: #8A2BE2;
+        }
+        .user-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .user-info p {
+            margin: 0;
+            margin-right: 10px;
+        }
+        .user-info form {
+            margin: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Добро пожаловать в Лавку Мудреца!</h1>
+        <div class="user-info">
+            {% if user.is_authenticated %}
+                <p>Приветствую, {{ user.username }}</p>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button class="logout-btn" type="submit">Распрощаться</button>
+                </form>
+            {% endif %}
+            <form action="{% url 'send_newsletter' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button class="subscribe-btn" type="submit">Подписаться на новости волшебного мира</button>
+            </form>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="sidebar">
+            <h3>Путеводитель по Лавке Мудреца:</h3>
+            <ul>
+                <li><a href="{% url 'all_advertisements' %}">Рынок артефактов</a></li>
+                <li><a href="{% url 'my_responses' %}">Секретные послания</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            {% block content %}
+            <h2>Вступите в клуб магических новостей</h2>
+            <form action="{% url 'subscribe_news' %}" method="post">
+                {% csrf_token %}
+                <input type="email" name="email" placeholder="Ваш магический адрес" required>
+                <button class="subscribe-btn" type="submit">Подписаться</button>
+            </form>
+            {% endblock %}
+        </div>
+        <div style="clear:both;"></div>
+    </div>
+</body>
+</html>

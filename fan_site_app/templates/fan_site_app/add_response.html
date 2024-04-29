@@ -1,0 +1,12 @@
+<!-- add_response.html -->
+{% extends 'base.html' %}
+{% block title %}Ответить на объявление{% endblock %}
+{% block content %}
+    <p>Вы вошли как: {{ request.user.profile.character_name }}</p>
+    <form method="post">
+        {% csrf_token %}
+        <label for="id_content">Ваше сообщение:</label><br>
+        <textarea id="id_content" name="content" rows="4" required></textarea><br>
+        <button type="submit">Отправить ответ</button>
+    </form>
+{% endblock %}

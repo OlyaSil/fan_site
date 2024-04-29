@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Подписка на новости{% endblock %}
+
+{% block content %}
+<div class="subscription-form">
+    <h2>Подписаться на заклинания и предсказания!</h2>
+    <p>Получайте самые свежие новости и интересные предложения из мира магии прямо на вашу сову.</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="subscribe-button">Подписаться</button>
+    </form>
+</div>
+{% endblock %}
+
+<style>
+    .subscription-form {
+        background: linear-gradient(to right, #f4e2d8, #ba8976);
+        border: 2px solid #d4b7a8;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        text-align: center;
+        max-width: 400px;
+        margin: auto;
+    }
+    .subscription-form h2 {
+        color: #5a3921;
+        font-family: 'Cinzel', serif;
+    }
+    .subscription-form p {
+        color: #3e2723;
+        font-family: 'Merriweather', serif;
+    }
+    .subscribe-button {
+        background-color: #8c6239;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 12px;
+        font-family: 'Merriweather', serif;
+    }
+</style>
