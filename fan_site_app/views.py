@@ -184,7 +184,7 @@ def delete_advertisement(request, advertisement_id):
 @login_required
 def edit_response(request, response_id):
     response = get_object_or_404(Response, pk=response_id)
-    advertisement_id = response.advertisement.pk  # Перенесено вверх
+    advertisement_id = response.advertisement.pk
     if request.user == response.respondent:
         if request.method == 'POST':
             form = ResponseForm(request.POST, instance=response)
@@ -250,7 +250,7 @@ def accept_response(request, response_id):
     response.save()
     return redirect('my_responses')
 
-login_required
+@login_required
 def delete_response(request, response_id):
     response = Response.objects.get(pk=response_id)
     response.delete()

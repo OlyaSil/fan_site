@@ -52,6 +52,11 @@
             color: red;
             margin-top: 10px;
         }
+        .register-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -66,6 +71,7 @@
             <p class="error-message">Неверный адрес электронной почты или пароль. Пожалуйста, попробуйте еще раз.</p>
         {% endif %}
         <button type="submit">Войти</button>
+        <p class="register-link">Ещё нет аккаунта? <a href="{% url 'register' %}">Зарегистрируйтесь</a></p>
     </form>
 </body>
 </html>

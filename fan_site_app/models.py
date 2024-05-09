@@ -34,16 +34,6 @@ class Advertisement(models.Model):
         self.likes.remove(user)
 
 
-class Response(models.Model):
-    advertisement = models.ForeignKey('Advertisement', related_name='responses', on_delete=models.CASCADE)
-    respondent = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.TextField()
-    created_at = models.DateTimeField(default=datetime.datetime.now)
-
-    def __str__(self):
-        return f'{self.content[:50]}... by {self.respondent.username}'
-
-
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 

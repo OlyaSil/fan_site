@@ -3,6 +3,8 @@ from django.contrib.auth import views as auth_views
 from .views import *
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth.views import LoginView
+
 
 urlpatterns = [
     path('advertisement/add/', add_advertisement, name='add_advertisement'),
@@ -18,9 +20,10 @@ urlpatterns = [
     path('activate/<uidb64>/<token>/', activate_account, name='activate_account'),
     path('login_with_code/', login_with_code_view, name='login_with_code'),
     path('invalid_code/', invalid_code, name='invalid_code'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
     path('my_responses/', my_responses, name='my_responses'),
     path('accept_response/<int:response_id>/', accept_response, name='accept_response'),
     path('delete_response/<int:response_id>/', delete_response, name='delete_response'),
     path('send_newsletter/', send_newsletter, name='send_newsletter'),
+    path('login/', LoginView.as_view(), name='login'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
